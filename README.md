@@ -2,6 +2,10 @@
 
 Junior Frontend test assignment implemented using **React 18 + TypeScript + Vite**. This is a standalone frontend project with a local Promise-based mock service; no real backend, API keys, or AI agent are required.
 
+## Live demo
+
+**Deployed application:** https://runforge-runs-psi.vercel.app/
+
 ## Quick start
 
 Requirements: Node.js 20+ and npm.
