@@ -1,23 +1,45 @@
-# Runforge — Runs dashboard
+# Runforge — Runs Dashboard
 
-Junior Frontend test assignment implemented using **React 18 + TypeScript + Vite**. This is a standalone frontend project with a local Promise-based mock service; no real backend, API keys, or AI agent are required.
+[Русский](#русский) · [English](#english)
 
-## Live demo
+**Live demo / Демо:** https://runforge-runs-psi.vercel.app/
 
-**Deployed application:** https://runforge-runs-psi.vercel.app/
+---
 
-## Quick start
+## Русский
 
-Requirements: Node.js 20+ and npm.
+### О проекте
+
+Тестовое задание Junior Frontend Developer для Runforge. Дашборд для просмотра запусков AI-агентов, поиска, фильтрации и изучения подробностей выполнения.
+
+**Стек:** React 18, TypeScript, Vite, CSS, Vitest, React Testing Library, Lucide React.
+
+Приложение работает с локальным асинхронным mock-сервисом на Promise. Настоящий backend, API-ключи и интеграция с AI-агентами не требуются.
+
+### Возможности
+
+- Адаптивный интерфейс с боковой навигацией, статистикой, таблицей из шести основных колонок и панелью подробностей справа (420 px).
+- Поддержка экранов от 360 px: горизонтальная прокрутка таблицы и полноэкранная панель подробностей на мобильных устройствах.
+- Поиск по названию запуска или репозиторию вместе с фильтрами All, Queued, Running, Succeeded, Failed.
+- Сортировка по дате создания и длительности с изменением направления.
+- Сохранение поиска и выбранного статуса в URL.
+- Просмотр репозитория, ветки, статуса, даты, длительности, логов и результата запуска; копирование логов.
+- Состояния загрузки (skeleton), пустой выдачи и ошибки с кнопкой повтора. Для проверки предусмотрена кнопка **Simulate error**.
+- 10 тестовых запусков со всеми четырьмя статусами; необязательные поля могут отсутствовать.
+- Управление с клавиатуры: **Ctrl/Cmd + K** — поиск, **Enter/Пробел** — подробности выбранной строки, **Escape** — закрыть панель.
+
+### Локальный запуск
+
+Требуются Node.js 20+ и npm.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the URL Vite prints (typically http://localhost:5173).
+Открой адрес, указанный Vite в терминале (обычно http://localhost:5173).
 
-For production and tests:
+### Сборка и тестирование
 
 ```bash
 npm run build
@@ -25,47 +47,89 @@ npm run preview
 npm test
 ```
 
-## Features
+Автотесты на Vitest проверяют фильтрацию по статусу, совместную работу поиска и фильтра, а также открытие и закрытие подробностей.
 
-- Full-width responsive dashboard with sidebar, summary cards, six data columns and a right-side **420px** run-details drawer.
-- Minimum 360px mobile width. Table scrolls horizontally on smaller viewports; the details drawer fills the screen on mobile.
-- Search by **run name or repository**, in combination with **All / Queued / Running / Succeeded / Failed** status filters.
-- Sort by **creation date** or **duration** (click a sortable header again to reverse the direction).
-- Filter and search persisted in URL query parameters: `?status=running&search=web`.
-- Click a row or use Enter/Space to open its details; close with the button, Escape, or backdrop on mobile.
-- Details show branch, repository, date, duration, logs, and result where available; copy logs to clipboard.
-- Loading skeleton (650ms artificial delay), empty search result, and error with a retry action. Use **Simulate error** to demonstrate failure; **Retry** restores data.
-- 10 mock runs covering all four statuses, with absent optional `durationSeconds` and `result` on some runs.
-- Three Vitest tests for status filtering, searching with status, and opening/closing details.
-- Keyboard: **Ctrl/Cmd+K** focuses search; **Escape** closes run details.
+**Ручная проверка:** выбери каждый статус; поищи название запуска и репозиторий; проверь пустую выдачу; открой и закрой панель подробностей; нажми **Simulate error**, затем **Retry**; проверь сортировку, сохранение параметров при обновлении страницы и отображение на ширине 360 px.
 
-## Project organization
+### Структура проекта
 
-- `src/types.ts`: `Run` and status types.
-- `src/data/runs.ts`: fixture data.
-- `src/services/runs.ts`: asynchronous Promise-based mock service.
-- `src/utils/runs.ts`: search, filtering, sorting, dates and durations.
-- `src/components/Sidebar.tsx`: sidebar.
-- `src/components/RunFilters.tsx`: search and status controls.
-- `src/components/RunsTable.tsx`: six-column runs table.
-- `src/components/RunDetails.tsx`: details drawer and logs.
-- `src/components/StatusBadge.tsx`: accessible textual status labels.
-- `src/App.tsx`: top-level state and integration.
-- `src/styles.css`: design system and responsive layout.
-- `src/__tests__/runs.test.tsx`: UI and filter tests.
+| Путь | Назначение |
+| --- | --- |
+| `src/App.tsx` | Состояние приложения и интеграция компонентов |
+| `src/types.ts` | Типы запусков и статусов |
+| `src/data/runs.ts` | Mock-данные |
+| `src/services/runs.ts` | Асинхронный mock-сервис |
+| `src/utils/runs.ts` | Поиск, фильтрация, сортировка и форматирование |
+| `src/components/` | Таблица, фильтры, боковая панель, статусы и подробности |
+| `src/styles.css` | Стили и адаптивность |
+| `src/__tests__/runs.test.tsx` | Автоматизированные тесты |
+| `AI_LOG.md` | Отчёт об использовании ИИ |
 
-## Manual verification
+### Ограничения
 
-1. Refresh and observe the loading skeleton, then the runs list.
-2. Select each status: only matching runs remain, with visible selection.
-3. Search `web-platform`; then select Running: only the two running runs from that repository remain.
-4. Search a random string: empty state appears. Clear filters.
-5. Open a run: details, logs and result (when available) are shown. Close with X or Escape.
-6. Use Simulate error: error state shows; Retry recovers.
-7. Sort by Created or Duration, then click again to reverse order.
-8. Reload with `?status=failed&search=worker` and verify the query is restored.
-9. Resize down to 360px: layout remains usable, table scrolls horizontally, and details are full-screen.
+Страницы других пунктов меню и создание нового запуска не реализованы: тестовое задание охватывает только страницу Runs. Временные метки отображаются в локальном часовом поясе пользователя.
 
-## Notes
+---
 
-The sidebar's other destinations and the New Run action are deliberately not implemented: the task requests only the Runs page, not a full backend/platform. The dashboard is an original interpretation of the specified cream/navy Runforge style, not a pixel-by-pixel clone. Times are formatted in the viewer's local timezone.
+## English
+
+### About
+
+Junior Frontend Developer take-home assignment for Runforge. A dashboard for exploring AI-agent runs, filtering executions, and inspecting run details.
+
+**Stack:** React 18, TypeScript, Vite, CSS, Vitest, React Testing Library, Lucide React.
+
+The application uses a local asynchronous Promise-based mock service. No real backend, API keys, or AI-agent infrastructure are needed.
+
+### Features
+
+- Responsive dashboard with sidebar, summary statistics, a six-column data table, and a 420 px details drawer.
+- Layout usable from 360 px: horizontal table scrolling and a full-screen details view on mobile.
+- Search by run name or repository, combined with All, Queued, Running, Succeeded, and Failed filters.
+- Sort by creation date or duration in either direction.
+- Search and status filter persisted in URL query parameters.
+- Run details with repository, branch, status, creation date, duration, logs, and optional result; copy logs to clipboard.
+- Loading skeleton, empty-results state, and error state with retry. Use **Simulate error** to test failures.
+- 10 example runs across all four statuses, including missing optional fields.
+- Keyboard support: **Ctrl/Cmd + K** to focus search, **Enter/Space** to open row details, **Escape** to close.
+
+### Getting started
+
+Requires Node.js 20+ and npm.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the URL printed by Vite (usually http://localhost:5173).
+
+### Build and tests
+
+```bash
+npm run build
+npm run preview
+npm test
+```
+
+Vitest tests cover status filtering, combined search and filtering, and opening/closing run details.
+
+**Manual checks:** try each status filter; search by run name and repository; verify the empty state; open and close the details drawer; use **Simulate error** and **Retry**; verify sorting, query parameters after reload, and the layout at 360 px.
+
+### Project structure
+
+| Path | Purpose |
+| --- | --- |
+| `src/App.tsx` | Application state and component integration |
+| `src/types.ts` | Run and status types |
+| `src/data/runs.ts` | Mock dataset |
+| `src/services/runs.ts` | Asynchronous mock service |
+| `src/utils/runs.ts` | Search, filtering, sorting, and formatting |
+| `src/components/` | Table, filters, sidebar, status badges, and details |
+| `src/styles.css` | Styling and responsive layout |
+| `src/__tests__/runs.test.tsx` | Automated tests |
+| `AI_LOG.md` | AI usage disclosure |
+
+### Scope
+
+Other sidebar destinations and the New Run action are outside the assignment scope. Dates are displayed in the viewer's local timezone.
